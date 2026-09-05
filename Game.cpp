@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+#include <cstring>
 
 Game::Game()
 {
@@ -34,7 +35,7 @@ void Game::Reset()
 		brick.x_position = i * (brickWidth + spacing);
 		brick.y_position = 5;
 		brick.doubleThick = true;
-		brick.color = ConsoleColor::DarkGreen;
+		brick.color = ConsoleColor::DarkCyan;
 		
 		bricks.push_back(brick);
 	}
@@ -97,11 +98,17 @@ void Game::CheckCollision()
 		if (brick->Contains(ball.x_position + ball.x_velocity, ball.y_position + ball.y_velocity))
 
 		{
-			brick->color = ConsoleColor(brick->color - 1);
+			brick->hits++;
 			ball.y_velocity *= -1;
 
+			if (brick->hits == 1)
+				brick->color = ConsoleColor::DarkGreen;
+			else if (brick->hits == 2)
+				brick->color = ConsoleColor::DarkBlue;
+
 			// TODO #5 - If the ball hits the same brick 3 times (color == black), remove it from the vector
-			if (brick->color == ConsoleColor::Black)
+
+			if (brick->hits >= 3)
 			{
 				bricks.erase(brick);
 			}
@@ -113,10 +120,14 @@ void Game::CheckCollision()
 	// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
 
 
+	if (bricks.empty())
+	{
+		ball.moving = false; 
+	}
+
 	if (paddle.Contains(ball.x_position + ball.x_velocity, ball.y_velocity + ball.y_position))
 	{
 		ball.y_velocity *= -1;
 	}
-
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
 }
