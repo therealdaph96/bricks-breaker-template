@@ -9,6 +9,7 @@ Game::Game()
 
 void Game::Reset()
 {
+	lost = false;
 	Console::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	Console::CursorVisible(false);
 	paddle.width = 12;
@@ -96,6 +97,15 @@ void Game::Render() const
 			"YOU WIN! Press 'R' to play again.");
 	}
 
+	else if (lost)
+	{
+		Console::WordWrap(
+			(WINDOW_WIDTH - 36) / 2,
+			(WINDOW_HEIGHT / 2) - 6,
+			36,
+			"YOU LOSE! Press 'R' to play again.");
+	}
+
 	Console::Lock(false);
 }
 
@@ -139,4 +149,9 @@ void Game::CheckCollision()
 		ball.y_velocity *= -1;
 	}
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
+	if (ball.y_position >= WINDOW_HEIGHT - 1)
+	{
+		ball.moving = false;
+		lost = true;
+	}
 }
