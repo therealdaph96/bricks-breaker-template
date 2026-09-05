@@ -81,7 +81,10 @@ void Game::Render() const
 	ball.Draw();
 
 	// TODO #3 - Update render to render all bricks
-	brick.Draw();
+	for (const Box& brick : bricks)
+	{
+		brick.Draw();
+	}
 
 	Console::Lock(false);
 }
@@ -89,6 +92,8 @@ void Game::Render() const
 void Game::CheckCollision()
 {
 	// TODO #4 - Update collision to check all bricks
+	for (Box& brick : bricks)
+
 	if (brick.Contains(ball.x_position + ball.x_velocity, ball.y_position + ball.y_velocity))
 	{
 		brick.color = ConsoleColor(brick.color - 1);
