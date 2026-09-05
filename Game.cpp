@@ -87,6 +87,15 @@ void Game::Render() const
 		brick.Draw();
 	}
 
+	if (bricks.empty())
+	{
+		Console::WordWrap(
+			(WINDOW_WIDTH - 36 ) / 2,
+			(WINDOW_HEIGHT / 2) - 6,
+			36,
+			"YOU WIN! Press 'R' to play again.");
+	}
+
 	Console::Lock(false);
 }
 
